@@ -1,37 +1,54 @@
 data = require('../Items')
- 
-const getItems =  (req, res) => {
-  res.send(data)
-}
 
-const getItem = (req, res) => {
-  const { id } = req.params;
-  item = data.find((item) => item.id === id);
-  res.send(item);
-}
-
-const addItem = (req, res) => {
-  const {name} = req.body;
-  item = {
-    id: "121",
-    name: name
+const getItems = async (req, res) => {
+  try {
+    await req.jwtVerify()
+    res.send(data)
+  } catch (err) {
+    res.send(err)
   }
-  data = [...data, item];
-  res.code(201).send(item);
 }
 
-const deleteItem = (req, res) => {
-  const {id} = req.body;
-  console.log("from api",id)
-  console.log(data.length);
-  data = data.filter(data=> data.id !== id);
-  console.log(data.length);
-  res.send({message: `Item ${id} has been been removed`})
+const getItem = async (req, res) => {
+  try {
+    await req.jwtVerify()
+    const { id } = req.params
+    item = data.find((item) => item.id === id)
+    res.send(item)
+  } catch (err) {
+    res.send(err)
+  }
+}
+
+const addItem = async (req, res) => {
+  try {
+    await req.jwtVerify()
+    const { name } = req.body
+    item = {
+      id: '121',
+      name: name,
+    }
+    data = [...data, item]
+    res.code(201).send(item)
+  } catch (err) {
+    res.send(err)
+  }
+}
+
+const deleteItem = async (req, res) => {
+  try {
+    await req.jwtVerify()
+    const { id } = req.body
+    data = data.filter((data) => data.id !== id)
+    res.send({ message: `Item ${id} has been been removed` })
+  } catch (err) {
+    res.send(err)
+  }
 }
 
 module.exports = {
   getItem,
   getItems,
   addItem,
-  deleteItem
+  deleteItem,
 }

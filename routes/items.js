@@ -10,17 +10,10 @@ const itemSchema = {
 
 const getItemsOpts = {
   schema: {
-    body: {
-      type : 'object',
-      required: ['name'],
-      properties: {
-        name: { type: 'string'}
-      }
-    },
     response: {
       200: {
         type: 'array',
-        item: itemSchema
+        item: itemSchema,
       },
     },
   },
